@@ -4,6 +4,23 @@ import authController from "../controllers/auth_controller";
 const authRouter = express.Router();
 
 /**
+* @swagger
+* tags:
+*   name: Auth
+*   description: The Authentication API
+*/
+
+/**
+* @swagger
+* components:
+*   securitySchemes:
+*     bearerAuth:
+*       type: http
+*       scheme: bearer
+*       bearerFormat: JWT
+*/
+
+/**
  * @swagger
  * components:
  *   schemas:

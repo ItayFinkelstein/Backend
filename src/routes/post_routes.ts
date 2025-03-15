@@ -5,6 +5,13 @@ import { authMiddleware } from "../controllers/auth_controller";
 const router = Router();
 
 /**
+* @swagger
+* tags:
+*   name: Posts
+*   description: The Posts API
+*/
+
+/**
  * @swagger
  * components:
  *   schemas:
@@ -77,6 +84,8 @@ router.get('/:id', (req, res) => { postsController.getById(req, res) });
  *   post:
  *     summary: Create a new post
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -101,6 +110,8 @@ router.post('/', authMiddleware, postsController.createItem.bind(postsController
  *   put:
  *     summary: Update a post by ID
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -134,6 +145,8 @@ router.put('/:id', authMiddleware, (req, res) => { postsController.updateItemByI
  *   delete:
  *     summary: Delete a post by ID
  *     tags: [Posts]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

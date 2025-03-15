@@ -5,6 +5,13 @@ import { authMiddleware } from "../controllers/auth_controller";
 const commentsRouter: Router = Router();
 
 /**
+* @swagger
+* tags:
+*   name: Comments
+*   description: The Comments API
+*/
+
+/**
  * @swagger
  * components:
  *   schemas:
@@ -83,6 +90,8 @@ commentsRouter.get("/:id", (req, res) => { commentsController.getById(req, res) 
  *   post:
  *     summary: Create a new comment
  *     tags: [Comments]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -107,6 +116,8 @@ commentsRouter.post("/", authMiddleware, commentsController.createItem.bind(comm
  *   put:
  *     summary: Update a comment by ID
  *     tags: [Comments]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -140,6 +151,8 @@ commentsRouter.put("/:id", authMiddleware, (req, res) => { commentsController.up
  *   delete:
  *     summary: Delete a comment by ID
  *     tags: [Comments]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
