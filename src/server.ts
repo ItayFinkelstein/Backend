@@ -21,8 +21,8 @@ const initApp = async (): Promise<Express> => {
             res.header("Access-Control-Allow-Methods", "*");
             res.header("Access-Control-Allow-Headers", "*");
             next();
-          });
-          
+        });
+
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use('/', indexRouter);
@@ -40,22 +40,21 @@ const initApp = async (): Promise<Express> => {
             await mongoose.connect(process.env.DB_CONNECTION);
             if (process.env.NODE_ENV == "development") {
                 const options = {
-                definition: {
-                openapi: "3.0.0",
-                info: {
-                title: "Fullstack project",
-                version: "1.0.0",
-                description: "Project of posts and comments, with user authentication",
-                },
-                servers: [{url: "http://localhost:3000"},],
-                },
-                apis: ["./src/routes/*.ts"],
+                    definition: {
+                        openapi: "3.0.0",
+                        info: {
+                            title: "Fullstack project",
+                            version: "1.0.0",
+                            description: "Project of posts and comments, with user authentication",
+                        },
+                        servers: [{ url: "http://localhost:3000" },],
+                    },
+                    apis: ["./src/routes/*.ts"],
                 };
                 const specs = swaggerJsDoc(options);
                 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-                console.log("set up swagger")
             }
-        
+
 
             resolve(app);
         }

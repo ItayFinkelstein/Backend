@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import userModel from '../models/userModel';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 
 const wrongDetails = "wrong email or password";
 const missingDetails = "missing email or password";
@@ -22,7 +22,7 @@ const tokens: Tokens = {
 
 const generateTokens = (_id: string): Tokens | null => {
     const tokenSignRandom = Math.floor(Math.random() * 10000000000);
-    const tokenSecret = process.env.TOKEN_SECRET;
+    const tokenSecret: string = process.env.TOKEN_SECRET as string;
 
     if (!tokenSecret) {
         return null;
@@ -34,7 +34,7 @@ const generateTokens = (_id: string): Tokens | null => {
             tokenSignRandom: tokenSignRandom
         },
         tokenSecret,
-        { expiresIn: process.env.TOKEN_EXPIRATION }
+        { expiresIn: process.env.TOKEN_EXPIRATION || '1h' } as SignOptions
     );
 
     const refreshToken = jwt.sign(
@@ -43,7 +43,7 @@ const generateTokens = (_id: string): Tokens | null => {
             tokenSignRandom: tokenSignRandom
         },
         tokenSecret,
-        { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION }
+        { expiresIn: process.env.REFRESH_TOKEN_EXPIRATION || '7d' } as SignOptions
     );
 
     return { accessToken, refreshToken };
