@@ -1,0 +1,17 @@
+[
+    {
+        "message": "this is test comment #1 hello world",
+        "postId": "45fafafvaz55bgae65",
+        "owner": "Itay"
+    },
+    {
+        "message": "another comment on the same post",
+        "postId": "45fafafvaz55bgae65",
+        "owner": "user"
+    },
+    {
+        "message": "whats up",
+        "postId": "wf315djhdfit8f",
+        "owner": "blah blah"
+    }
+]

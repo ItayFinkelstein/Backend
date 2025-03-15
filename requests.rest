@@ -1,0 +1,125 @@
+###
+GET http://localhost:3000/
+
+###
+GET http://localhost:3000/post
+
+###
+GET http://localhost:3000/post?owner=John
+
+###
+GET http://localhost:3000/post?owner=NonExistingOwner
+
+###
+GET http://localhost:3000/post?owner=David
+
+###
+GET http://localhost:3000/post?id=12345
+
+###
+GET http://localhost:3000/post/123
+
+###
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "itay.f@gmail.com",
+    "password": "top_secret"
+}
+
+###
+POST http://localhost:3000/post
+Content-Type: application/json
+Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkyODc5MjYxY2VmY2JkOTJlMWJjNjQiLCJpYXQiOjE3Mzc2NTg2MjAsImV4cCI6MTczNzc0NTAyMH0.XyYNmoKILj_8P1NSlyMKCPoxjL7NNupDexpsrbZg_B8
+
+{
+    "owner": "David",
+    "message": "Hello people"
+}
+
+###
+POST http://localhost:3000/post
+Content-Type: application/json
+Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkyODc5MjYxY2VmY2JkOTJlMWJjNjQiLCJpYXQiOjE3Mzc2NTg2MjAsImV4cCI6MTczNzc0NTAyMH0.XyYNmoKILj_8P1NSlyMKCPoxjL7NNupDexpsrbZg_B8
+
+{
+    "_id": "678ba58058ecb33d1473f93b",
+    "owner": "John",
+    "message": "Hello people",
+}
+
+###
+PUT http://localhost:3000/post/678ba58058ecb33d1473f93b
+Content-Type: application/json
+Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkyODc5MjYxY2VmY2JkOTJlMWJjNjQiLCJpYXQiOjE3Mzc2NTg2MjAsImV4cCI6MTczNzc0NTAyMH0.XyYNmoKILj_8P1NSlyMKCPoxjL7NNupDexpsrbZg_B8
+
+{
+    "_id": "678ba58058ecb33d1473f93b",
+    "owner": "John",
+    "message": "Tomorrow will be great"
+}
+
+###
+DELETE http://localhost:3000/post/678ba58058ecb33d1473f93b
+
+###
+GET http://localhost:3000/comments
+
+###
+GET http://localhost:3000/comments?owner=Itay
+
+###
+GET http://localhost:3000/comments?owner=NOTItay
+
+###
+GET http://localhost:3000/comments?postId=12345
+
+###
+GET http://localhost:3000/comments?postId=12345&owner=Itay
+
+###
+GET http://localhost:3000/comments?postId=12345&owner=NOTItay
+
+###
+GET http://localhost:3000/comments?postId=123456789&owner=Itay
+
+###
+GET http://localhost:3000/comments/123
+
+###
+GET http://localhost:3000/comments/67828e370ba9ad74f6700bea
+
+###
+POST http://localhost:3000/comments
+Content-Type: application/json
+
+{
+    "message": "hello world!!!",
+    "owner": "Itay",
+    "postId": "12345"
+}
+
+###
+POST http://localhost:3000/comments
+Content-Type: application/json
+
+{
+    "_id": "6782920ce39804cd14c2dfb0",
+    "message": "comment to delete",
+    "owner": "delete",
+    "postId": "9999999"
+}
+
+###
+PUT http://localhost:3000/comments/6782920ce39804cd14c2dfb0
+Content-Type: application/json
+
+{
+    "message": "UPDATED!!!",
+    "owner": "test",
+    "postId": "12345678"
+}
+
+###
+DELETE http://localhost:3000/comments/6782920ce39804cd14c2dfb0
