@@ -1,15 +1,15 @@
-import { Router } from 'express';
-import postsController from '../controllers/post_controller';
+import { Router } from "express";
+import postsController from "../controllers/post_controller";
 import { authMiddleware } from "../controllers/auth_controller";
 
 const router = Router();
 
 /**
-* @swagger
-* tags:
-*   name: Posts
-*   description: The Posts API
-*/
+ * @swagger
+ * tags:
+ *   name: Posts
+ *   description: The Posts API
+ */
 
 /**
  * @swagger
@@ -52,7 +52,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/Post'
  */
-router.get('/', postsController.getAll.bind(postsController));
+router.get("/", postsController.getAll.bind(postsController));
 /**
  * @swagger
  * /post/{id}:
@@ -76,7 +76,9 @@ router.get('/', postsController.getAll.bind(postsController));
  *       404:
  *         description: Post not found
  */
-router.get('/:id', (req, res) => { postsController.getById(req, res) });
+router.get("/:id", (req, res) => {
+  postsController.getById(req, res);
+});
 
 /**
  * @swagger
@@ -102,7 +104,11 @@ router.get('/:id', (req, res) => { postsController.getById(req, res) });
  *       500:
  *         description: Some server error
  */
-router.post('/', authMiddleware, postsController.createItem.bind(postsController));
+router.post(
+  "/",
+  authMiddleware,
+  postsController.createItem.bind(postsController)
+);
 
 /**
  * @swagger
@@ -137,7 +143,9 @@ router.post('/', authMiddleware, postsController.createItem.bind(postsController
  *       500:
  *         description: Some server error
  */
-router.put('/:id', authMiddleware, (req, res) => { postsController.updateItemById(req, res) });
+router.put("/:id", authMiddleware, (req, res) => {
+  postsController.updateItemById(req, res);
+});
 
 /**
  * @swagger
@@ -160,6 +168,8 @@ router.put('/:id', authMiddleware, (req, res) => { postsController.updateItemByI
  *       404:
  *         description: Post not found
  */
-router.delete('/:id', authMiddleware, (req, res) => { postsController.deleteItemById(req, res) });
+router.delete("/:id", authMiddleware, (req, res) => {
+  postsController.deleteItemById(req, res);
+});
 
 export default router;
