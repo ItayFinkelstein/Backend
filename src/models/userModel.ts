@@ -5,6 +5,7 @@ export interface IUser {
   _id?: string;
   email: string;
   name: string;
+  iconImage?: string;
   password: string;
   refreshTokens: string[];
 }
@@ -26,6 +27,9 @@ const userSchema = new Schema<IUser>({
   name: {
     type: String,
     required: true,
+  },
+  iconImage: {
+    type: String,
   },
 });
 

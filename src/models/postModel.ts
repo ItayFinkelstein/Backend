@@ -2,9 +2,11 @@ import mongoose from "mongoose";
 
 export interface IPost {
   _id?: string;
+  title: string;
   message: string;
   owner: string;
   image?: string;
+  publishDate?: Date;
 }
 const postSchema = new mongoose.Schema<IPost>({
   message: {
@@ -17,6 +19,14 @@ const postSchema = new mongoose.Schema<IPost>({
   },
   image: {
     type: String,
+  },
+  publishDate: {
+    type: Date,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
   },
 });
 
