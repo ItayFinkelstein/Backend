@@ -1,24 +1,26 @@
 import express, { Request, Response } from "express";
 import authController from "../controllers/auth_controller";
+import { OAuth2Client } from "google-auth-library";
 
 const authRouter = express.Router();
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 /**
-* @swagger
-* tags:
-*   name: Auth
-*   description: The Authentication API
-*/
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: The Authentication API
+ */
 
 /**
-* @swagger
-* components:
-*   securitySchemes:
-*     bearerAuth:
-*       type: http
-*       scheme: bearer
-*       bearerFormat: JWT
-*/
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
 
 /**
  * @swagger
@@ -74,7 +76,7 @@ const authRouter = express.Router();
  *         description: Some server error
  */
 authRouter.post("/register", (req: Request, res: Response) => {
-    authController.register(req, res);
+  authController.register(req, res);
 });
 
 /**
@@ -115,7 +117,7 @@ authRouter.post("/register", (req: Request, res: Response) => {
  *         description: Some server error
  */
 authRouter.post("/login", (req: Request, res: Response) => {
-    authController.login(req, res);
+  authController.login(req, res);
 });
 
 /**
@@ -142,7 +144,7 @@ authRouter.post("/login", (req: Request, res: Response) => {
  *         description: Some server error
  */
 authRouter.post("/logout", (req: Request, res: Response) => {
-    authController.logout(req, res);
+  authController.logout(req, res);
 });
 
 /**
@@ -180,7 +182,36 @@ authRouter.post("/logout", (req: Request, res: Response) => {
  *         description: Some server error
  */
 authRouter.post("/refresh", (req: Request, res: Response) => {
-    authController.refresh(req, res);
+  authController.refresh(req, res);
 });
+
+interface TokenPayload {
+  email: string;
+  name: string;
+  // Add other properties if needed
+}
+const googlesignIn = async (req: Request, res: Response) => {
+  const token = req.body.credential;
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload() as TokenPayload;
+    const email = payload?.email;
+    const name = payload?.name;
+
+    return authController.googleLoginOrRegister(email, name, res);
+  } catch (error) {
+    return res.status(400).send("error missing email or password");
+  }
+};
+
+authRouter.post("/google", (req, res) => {
+  googlesignIn(req, res);
+});
+
+// Handle user registration or login
+//authController.googleLoginOrRegister(sub, email, name, res);
 
 export default authRouter;
