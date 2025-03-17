@@ -226,6 +226,7 @@ class AuthController {
         });
       }
 
+      /** todo: check if it makes sense that if we don't disappear the sign-in button and we press it multiple times, it keeps adding refresh tokens. */
       generateTokensForLogic(user, res);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
