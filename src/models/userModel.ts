@@ -27,7 +27,7 @@ const userSchema = new Schema<IUser>({
   },
 });
 
-userSchema.index({ email: 1, type: 1 }, { unique: true });
+userSchema.index({ email: 1, type: 1 }, { unique: true }); // uniquness for the combination of email and type
 
 const userModel = mongoose.model<IUser>("Users", userSchema);
 

@@ -188,7 +188,6 @@ authRouter.post("/refresh", (req: Request, res: Response) => {
 interface TokenPayload {
   email: string;
   name: string;
-  // Add other properties if needed
 }
 const googlesignIn = async (req: Request, res: Response) => {
   const token = req.body.credential;
@@ -207,11 +206,9 @@ const googlesignIn = async (req: Request, res: Response) => {
   }
 };
 
+/** todo: add swagger */
 authRouter.post("/google", (req, res) => {
   googlesignIn(req, res);
 });
-
-// Handle user registration or login
-//authController.googleLoginOrRegister(sub, email, name, res);
 
 export default authRouter;
