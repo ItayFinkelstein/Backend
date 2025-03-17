@@ -1,10 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-import userModel from "../models/userModel";
+import userModel, { IUser } from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
 
 const wrongDetails = "wrong email or password";
 const missingDetails = "missing email or password";
+
+const NORMAL_USER = "normal";
+const GOOGLE_USER = "google";
 
 type TokenPayload = {
   _id: string;
@@ -108,6 +111,7 @@ class AuthController {
       const user = await userModel.create({
         email: email,
         password: hashedPassword,
+        type: NORMAL_USER,
       });
       return res.status(200).send(user);
     } catch (error) {
@@ -124,7 +128,7 @@ class AuthController {
     }
 
     try {
-      const user = await userModel.findOne({ email: email });
+      const user = await userModel.findOne({ email: email, type: NORMAL_USER });
       if (!user) {
         return res.status(400).send(wrongDetails);
       }
@@ -135,24 +139,7 @@ class AuthController {
         return res.status(400).send(wrongDetails);
       }
 
-      const userId = user._id;
-      const tokens = generateTokens(userId);
-      if (!tokens) {
-        return res.status(400).send("missing auth configuration");
-      }
-
-      if (user.refreshTokens == null) {
-        user.refreshTokens = [];
-      }
-      user.refreshTokens.push(tokens.refreshToken);
-
-      await user.save();
-      res.status(200).send({
-        _id: user._id,
-        email: user.email,
-        accessToken: tokens.accessToken,
-        refreshToken: tokens.refreshToken,
-      });
+      generateTokensForLogic(user, res);
     } catch (error) {
       return res.status(400).send(error);
     }
@@ -230,32 +217,16 @@ class AuthController {
 
   async googleLoginOrRegister(email: string, name: string, res: Response) {
     try {
-      let user = await userModel.findOne({ email });
+      let user = await userModel.findOne({ email, type: GOOGLE_USER });
       if (!user) {
         user = await userModel.create({
           email,
           name,
+          type: GOOGLE_USER,
         });
       }
-      /** todo: function with logic from login */
-      const tokens = generateTokens(user._id);
-      if (!tokens) {
-        return res.status(400).send("missing auth configuration");
-      }
 
-      if (user.refreshTokens == null) {
-        user.refreshTokens = [];
-      }
-      user.refreshTokens.push(tokens.refreshToken);
-      console.log("user");
-      console.log(user);
-      await user.save();
-      res.status(200).send({
-        _id: user._id,
-        email: user.email,
-        accessToken: tokens.accessToken,
-        refreshToken: tokens.refreshToken,
-      });
+      generateTokensForLogic(user, res);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -264,3 +235,27 @@ class AuthController {
 
 const authController = new AuthController();
 export default authController;
+
+interface UserWithRequiredId extends Omit<IUser, "_id"> {
+  _id: string; // make the '_id' field required
+}
+async function generateTokensForLogic(
+  user: UserWithRequiredId,
+  res: Response<any, Record<string, any>>
+) {
+  const tokens = generateTokens(user._id);
+  if (!tokens) {
+    return res.status(400).send("missing auth configuration");
+  }
+
+  if (user.refreshTokens == null) {
+    user.refreshTokens = [];
+  }
+  user.refreshTokens.push(tokens.refreshToken);
+  console.log("user");
+  await userModel.findByIdAndUpdate(user._id, user, { new: true });
+  res.status(200).send({
+    _id: user._id,
+    email: user.email,
+  });
+}
