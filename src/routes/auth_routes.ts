@@ -1,9 +1,7 @@
 import express, { Request, Response } from "express";
 import authController from "../controllers/auth_controller";
-import { OAuth2Client } from "google-auth-library";
 
 const authRouter = express.Router();
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 /**
  * @swagger
@@ -185,27 +183,6 @@ authRouter.post("/refresh", (req: Request, res: Response) => {
   authController.refresh(req, res);
 });
 
-interface TokenPayload {
-  email: string;
-  name: string;
-}
-const googleSignIn = async (req: Request, res: Response) => {
-  const token = req.body.credential;
-  try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-    const payload = ticket.getPayload() as TokenPayload;
-    const email = payload?.email;
-    const name = payload?.name;
-
-    return authController.googleLoginOrRegister(email, name, res);
-  } catch (error) {
-    return res.status(400).send("error missing email or password");
-  }
-};
-
 /**
  * @swagger
  * /auth/google:
@@ -244,7 +221,7 @@ const googleSignIn = async (req: Request, res: Response) => {
  *         description: Some server error
  */
 authRouter.post("/google", (req, res) => {
-  googleSignIn(req, res);
+  authController.googleSignIn(req, res);
 });
 
 export default authRouter;

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import userModel, { IUser } from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt, { SignOptions } from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 
 const wrongDetails = "wrong email or password";
 const missingDetails = "missing email or password";
@@ -9,19 +10,25 @@ const missingDetails = "missing email or password";
 const NORMAL_USER = "normal";
 const GOOGLE_USER = "google";
 
+const googleAuthClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 type TokenPayload = {
   _id: string;
 };
+
+interface GoogleTokenPayload {
+  email: string;
+  name: string;
+}
 
 type Tokens = {
   accessToken: string;
   refreshToken: string;
 };
 
-const tokens: Tokens = {
-  accessToken: "itay.f@gmail.com",
-  refreshToken: "top_secret",
-};
+interface UserWithRequiredId extends Omit<IUser, "_id"> {
+  _id: string; // make the '_id' field required
+}
 
 const generateTokens = (_id: string): Tokens | null => {
   const tokenSignRandom = Math.floor(Math.random() * 10000000000);
@@ -133,7 +140,6 @@ class AuthController {
         return res.status(400).send(wrongDetails);
       }
 
-      /** todo: fix password! */
       const isValidPassword = await bcrypt.compare(password, user.password!);
       if (!isValidPassword) {
         return res.status(400).send(wrongDetails);
@@ -226,20 +232,30 @@ class AuthController {
         });
       }
 
-      /** todo: check if it makes sense that if we don't disappear the sign-in button and we press it multiple times, it keeps adding refresh tokens. */
       generateTokensForLogin(user, res);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+
+  async googleSignIn(req: Request, res: Response) {
+    const token = req.body.credential;
+    try {
+      const ticket = await googleAuthClient.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload() as GoogleTokenPayload;
+      const email = payload?.email;
+      const name = payload?.name;
+
+      return authController.googleLoginOrRegister(email, name, res);
+    } catch (error) {
+      return res.status(400).send("error missing email or password");
+    }
+  }
 }
 
-const authController = new AuthController();
-export default authController;
-
-interface UserWithRequiredId extends Omit<IUser, "_id"> {
-  _id: string; // make the '_id' field required
-}
 async function generateTokensForLogin(
   user: UserWithRequiredId,
   res: Response<any, Record<string, any>>
@@ -253,10 +269,12 @@ async function generateTokensForLogin(
     user.refreshTokens = [];
   }
   user.refreshTokens.push(tokens.refreshToken);
-  console.log("user");
   await userModel.findByIdAndUpdate(user._id, user, { new: true });
   res.status(200).send({
     _id: user._id,
     email: user.email,
   });
 }
+
+const authController = new AuthController();
+export default authController;
