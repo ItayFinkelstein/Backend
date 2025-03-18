@@ -9,7 +9,8 @@
     "test": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage --runInBand",
     "testComments": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage comments.test.ts",
     "testPosts": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage post.test.ts",
-    "testAuth": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage auth.test.ts"
+    "testAuth": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage auth.test.ts",
+    "testFiles": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage files.test.ts"
   },
   "author": "",
   "license": "ISC",
