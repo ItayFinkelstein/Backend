@@ -1,14 +1,17 @@
 [
-    {
-        "message": "this is The first post, cool ha",
-        "owner": "Gil"
-    },
-    {
-        "message": "The 2nd post, number two",
-        "owner": "Jill"
-    },
-    {
-        "message": "Post with a message",
-        "owner": "Tom Avni"
-    }
+  {
+    "message": "this is The first post, cool ha",
+    "owner": "Gil",
+    "title": "First Post"
+  },
+  {
+    "message": "The 2nd post, number two",
+    "owner": "Jill",
+    "title": "Second Post"
+  },
+  {
+    "message": "Post with a message",
+    "owner": "Tom Avni",
+    "title": "Important Post"
+  }
 ]
