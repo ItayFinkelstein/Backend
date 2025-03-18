@@ -15,11 +15,6 @@ type Tokens = {
     refreshToken: string;
 };
 
-const tokens: Tokens = {
-    accessToken: "itay.f@gmail.com",
-    refreshToken: "top_secret"
-}
-
 const generateTokens = (_id: string): Tokens | null => {
     const tokenSignRandom = Math.floor(Math.random() * 10000000000);
     const tokenSecret: string = process.env.TOKEN_SECRET as string;
@@ -73,6 +68,8 @@ const register = async (req: Request, res: Response) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
+    const iconImageURI = req.body.iconImageURI || null;
+
     if (!email || !password) {
         return res.status(400).send(missingDetails);
     }
@@ -83,6 +80,7 @@ const register = async (req: Request, res: Response) => {
             name: name,
             email: email,
             password: hashedPassword,
+            iconImage: iconImageURI,
         });
         return res.status(200).send(user);
     } catch (error) {

@@ -26,6 +26,7 @@ const initApp = async (): Promise<Express> => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use("/", indexRouter);
+    app.use("/storage", express.static("storage"));
     app.use("/post", postRouter);
     app.use("/comments", commentRouter);
     app.use("/auth", authRouter);
