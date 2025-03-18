@@ -37,7 +37,7 @@ class BaseController<T> {
         if (items) {
           res.status(200).send(items);
         } else {
-          res.status(404).send(`Item with id ${idToFind} not found`);
+          res.status(400).send(`invalid ObjectId`);
         }
       } catch (error) {
         res.status(500).send(error);
