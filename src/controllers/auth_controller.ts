@@ -70,6 +70,7 @@ const invalidateUserTokens = async (user: any, refreshToken: string) => {
 };
 
 const register = async (req: Request, res: Response) => {
+    const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
     if (!email || !password) {
@@ -79,6 +80,7 @@ const register = async (req: Request, res: Response) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const user = await userModel.create({
+            name: name,
             email: email,
             password: hashedPassword,
         });
