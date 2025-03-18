@@ -189,7 +189,7 @@ interface TokenPayload {
   email: string;
   name: string;
 }
-const googlesignIn = async (req: Request, res: Response) => {
+const googleSignIn = async (req: Request, res: Response) => {
   const token = req.body.credential;
   try {
     const ticket = await client.verifyIdToken({
@@ -206,9 +206,45 @@ const googlesignIn = async (req: Request, res: Response) => {
   }
 };
 
-/** todo: add swagger */
+/**
+ * @swagger
+ * /auth/google:
+ *   post:
+ *     summary: Authenticate a user using Google OAuth
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               credential:
+ *                 type: string
+ *                 description: The Google OAuth credential (ID token)
+ *             example:
+ *               credential: "eyJhbGciOiJSUzI1NiIsImtpZCI6..."
+ *     responses:
+ *       200:
+ *         description: The user was successfully authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: The JWT token for the authenticated user
+ *                 refreshToken:
+ *                   type: string
+ *                   description: The refresh token for the authenticated user
+ *       400:
+ *         description: Invalid or missing credential
+ *       500:
+ *         description: Some server error
+ */
 authRouter.post("/google", (req, res) => {
-  googlesignIn(req, res);
+  googleSignIn(req, res);
 });
 
 export default authRouter;
