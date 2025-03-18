@@ -1,15 +1,15 @@
-import { Router } from 'express';
-import commentsController from '../controllers/comment_controller';
+import { Router } from "express";
+import commentsController from "../controllers/comment_controller";
 import { authMiddleware } from "../controllers/auth_controller";
 
 const commentsRouter: Router = Router();
 
 /**
-* @swagger
-* tags:
-*   name: Comments
-*   description: The Comments API
-*/
+ * @swagger
+ * tags:
+ *   name: Comments
+ *   description: The Comments API
+ */
 
 /**
  * @swagger
@@ -82,7 +82,40 @@ commentsRouter.get("/", commentsController.getAll.bind(commentsController));
  *       404:
  *         description: Comment not found
  */
-commentsRouter.get("/:id", (req, res) => { commentsController.getById(req, res) });
+commentsRouter.get("/:id", (req, res) => {
+  commentsController.getById(req, res);
+});
+
+/**
+ * @swagger
+ * /comments/post/{id}:
+ *   get:
+ *     summary: Get comments by Post ID
+ *     tags: [Comments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The Post ID
+ *     responses:
+ *       200:
+ *         description: List of comments for the specified post
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Comment'
+ *       400:
+ *         description: Invalid Post ID
+ *       500:
+ *         description: Some server error
+ */
+commentsRouter.get("/post/:id", (req, res) => {
+  commentsController.getByPostId(req, res);
+});
 
 /**
  * @swagger
@@ -108,7 +141,11 @@ commentsRouter.get("/:id", (req, res) => { commentsController.getById(req, res) 
  *       500:
  *         description: Some server error
  */
-commentsRouter.post("/", authMiddleware, commentsController.createItem.bind(commentsController));
+commentsRouter.post(
+  "/",
+  authMiddleware,
+  commentsController.createItem.bind(commentsController)
+);
 
 /**
  * @swagger
@@ -143,7 +180,9 @@ commentsRouter.post("/", authMiddleware, commentsController.createItem.bind(comm
  *       500:
  *         description: Some server error
  */
-commentsRouter.put("/:id", authMiddleware, (req, res) => { commentsController.updateItemById(req, res) });
+commentsRouter.put("/:id", authMiddleware, (req, res) => {
+  commentsController.updateItemById(req, res);
+});
 
 /**
  * @swagger
@@ -166,6 +205,8 @@ commentsRouter.put("/:id", authMiddleware, (req, res) => { commentsController.up
  *       404:
  *         description: Comment not found
  */
-commentsRouter.delete("/:id", authMiddleware, (req, res) => { commentsController.deleteItemById(req, res) });
+commentsRouter.delete("/:id", authMiddleware, (req, res) => {
+  commentsController.deleteItemById(req, res);
+});
 
 export default commentsRouter;
