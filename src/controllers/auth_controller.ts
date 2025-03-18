@@ -139,7 +139,7 @@ class AuthController {
         return res.status(400).send(wrongDetails);
       }
 
-      generateTokensForLogic(user, res);
+      generateTokensForLogin(user, res);
     } catch (error) {
       return res.status(400).send(error);
     }
@@ -227,7 +227,7 @@ class AuthController {
       }
 
       /** todo: check if it makes sense that if we don't disappear the sign-in button and we press it multiple times, it keeps adding refresh tokens. */
-      generateTokensForLogic(user, res);
+      generateTokensForLogin(user, res);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
@@ -240,7 +240,7 @@ export default authController;
 interface UserWithRequiredId extends Omit<IUser, "_id"> {
   _id: string; // make the '_id' field required
 }
-async function generateTokensForLogic(
+async function generateTokensForLogin(
   user: UserWithRequiredId,
   res: Response<any, Record<string, any>>
 ) {
