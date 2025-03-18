@@ -85,6 +85,30 @@ export const authMiddleware = (
 ) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
+const register = async (req: Request, res: Response) => {
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    if (!email || !password) {
+        return res.status(400).send(missingDetails);
+    }
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const user = await userModel.create({
+            name: name,
+            email: email,
+            password: hashedPassword,
+        });
+        return res.status(200).send(user);
+    } catch (error) {
+        return res.status(400).send(error);
+    }
+};
+
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
     res.status(401).send("missing token");
