@@ -249,7 +249,7 @@ class AuthController {
       const email = payload?.email;
       const name = payload?.name;
 
-      return authController.googleLoginOrRegister(email, name, res);
+      return this.googleLoginOrRegister(email, name, res);
     } catch (error) {
       return res.status(400).send("error missing email or password");
     }
