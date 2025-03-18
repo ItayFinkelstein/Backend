@@ -17,6 +17,32 @@ class PostController extends BaseController<typeof postModel> {
 
     return super.createItem(req, res);
   }
+
+  async getWithPaging(req: Request, res: Response) {
+    const page = req.query.page ? parseInt(req.query.page as string) : null; // Check if page is provided
+
+    try {
+      let posts;
+
+      if (page) {
+        const limit = parseInt(process.env.LIMIT_POST_FETCHING || "10", 10);
+        const skip = (page - 1) * limit;
+        posts = await postModel.find().skip(skip).limit(limit);
+
+        const totalPostsAmount = await postModel.countDocuments();
+
+        res.status(200).send({
+          posts: posts,
+          hasNextPage: skip + posts.length < totalPostsAmount,
+        });
+      } else {
+        posts = await postModel.find();
+        res.status(200).send({ posts });
+      }
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  }
 }
 
 const postsController = new PostController(postModel);
