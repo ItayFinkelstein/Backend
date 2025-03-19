@@ -23,7 +23,6 @@ router.post('/', upload.single("file"), (req: Request, res: Response): void => {
         return;
     }
     const fileUrl = `${baseUrl}/storage/${req.file.filename}`;
-    console.log(`router.post(/file): ${fileUrl}`);
     res.status(200).send({ url: fileUrl });
 });
 

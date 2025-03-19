@@ -29,7 +29,7 @@ const generateTokens = (_id: string): Tokens | null => {
             tokenSignRandom: tokenSignRandom
         },
         tokenSecret,
-        { expiresIn: process.env.TOKEN_EXPIRATION || '1h' } as SignOptions
+        { expiresIn: process.env.TOKEN_EXPIRATION || '1d' } as SignOptions
     );
 
     const refreshToken = jwt.sign(
@@ -68,7 +68,7 @@ const register = async (req: Request, res: Response) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    const iconImageURI = req.body.iconImageURI || null;
+    const iconImageURI = req.body.avatarUrl || null;
 
     if (!email || !password) {
         return res.status(400).send(missingDetails);
