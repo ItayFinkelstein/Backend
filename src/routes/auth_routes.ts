@@ -4,21 +4,21 @@ import authController from "../controllers/auth_controller";
 const authRouter = express.Router();
 
 /**
-* @swagger
-* tags:
-*   name: Auth
-*   description: The Authentication API
-*/
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: The Authentication API
+ */
 
 /**
-* @swagger
-* components:
-*   securitySchemes:
-*     bearerAuth:
-*       type: http
-*       scheme: bearer
-*       bearerFormat: JWT
-*/
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
 
 /**
  * @swagger
@@ -74,7 +74,7 @@ const authRouter = express.Router();
  *         description: Some server error
  */
 authRouter.post("/register", (req: Request, res: Response) => {
-    authController.register(req, res);
+  authController.register(req, res);
 });
 
 /**
@@ -115,7 +115,7 @@ authRouter.post("/register", (req: Request, res: Response) => {
  *         description: Some server error
  */
 authRouter.post("/login", (req: Request, res: Response) => {
-    authController.login(req, res);
+  authController.login(req, res);
 });
 
 /**
@@ -142,7 +142,7 @@ authRouter.post("/login", (req: Request, res: Response) => {
  *         description: Some server error
  */
 authRouter.post("/logout", (req: Request, res: Response) => {
-    authController.logout(req, res);
+  authController.logout(req, res);
 });
 
 /**
@@ -180,7 +180,48 @@ authRouter.post("/logout", (req: Request, res: Response) => {
  *         description: Some server error
  */
 authRouter.post("/refresh", (req: Request, res: Response) => {
-    authController.refresh(req, res);
+  authController.refresh(req, res);
+});
+
+/**
+ * @swagger
+ * /auth/google:
+ *   post:
+ *     summary: Authenticate a user using Google OAuth
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               credential:
+ *                 type: string
+ *                 description: The Google OAuth credential (ID token)
+ *             example:
+ *               credential: "eyJhbGciOiJSUzI1NiIsImtpZCI6..."
+ *     responses:
+ *       200:
+ *         description: The user was successfully authenticated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: The JWT token for the authenticated user
+ *                 refreshToken:
+ *                   type: string
+ *                   description: The refresh token for the authenticated user
+ *       400:
+ *         description: Invalid or missing credential
+ *       500:
+ *         description: Some server error
+ */
+authRouter.post("/google", (req, res) => {
+  authController.googleSignIn(req, res);
 });
 
 export default authRouter;

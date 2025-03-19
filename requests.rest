@@ -31,11 +31,13 @@ Content-Type: application/json
 ###
 POST http://localhost:3000/post
 Content-Type: application/json
-Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkyODc5MjYxY2VmY2JkOTJlMWJjNjQiLCJpYXQiOjE3Mzc2NTg2MjAsImV4cCI6MTczNzc0NTAyMH0.XyYNmoKILj_8P1NSlyMKCPoxjL7NNupDexpsrbZg_B8
+Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2Q5YTA1ODEwY2ZlZmNlZGY0MzA2NGMiLCJ0b2tlblNpZ25SYW5kb20iOjkyODQzNjYxMywiaWF0IjoxNzQyMzE2MjQwLCJleHAiOjE3NDIzMTk4NDB9.G-Ekhg9v4rtVp2KHhDzZThn4TXuSADC0Gp8Eqzmy6yg
 
 {
-    "owner": "David",
-    "message": "Hello people"
+    "title": "My First Post",
+    "message": "This is the content of my first post.",
+    "owner": "Itay",
+    "publishDate": "2025-03-18T00:00:00.000Z"
 }
 
 ###
@@ -93,6 +95,7 @@ GET http://localhost:3000/comments/67828e370ba9ad74f6700bea
 ###
 POST http://localhost:3000/comments
 Content-Type: application/json
+Authorization: jwt eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkyODc5MjYxY2VmY2JkOTJlMWJjNjQiLCJpYXQiOjE3Mzc2NTg2MjAsImV4cCI6MTczNzc0NTAyMH0.XyYNmoKILj_8P1NSlyMKCPoxjL7NNupDexpsrbZg_B8
 
 {
     "message": "hello world!!!",
@@ -107,7 +110,7 @@ Content-Type: application/json
 {
     "_id": "6782920ce39804cd14c2dfb0",
     "message": "comment to delete",
-    "owner": "delete",
+    "owner": "67d8a4dbcc7392c9310c312c",
     "postId": "9999999"
 }
 
