@@ -285,7 +285,6 @@ async function generateTokensForLogin(
   res: Response<any, Record<string, any>>
 ) {
   const tokens = generateTokens(user._id);
-  console.log(tokens);
   if (!tokens) {
     return res.status(400).send("missing auth configuration");
   }
@@ -300,6 +299,7 @@ async function generateTokensForLogin(
     email: user.email,
     accessToken: tokens.accessToken,
     refreshToken: tokens.refreshToken,
+    name: user.name,
   });
 }
 
