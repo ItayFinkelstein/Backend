@@ -9,12 +9,14 @@
     "test": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage --runInBand",
     "testComments": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage comments.test.ts",
     "testPosts": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage post.test.ts",
-    "testAuth": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage auth.test.ts"
+    "testAuth": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage auth.test.ts",
+    "testFiles": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage files.test.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/express": "^5.0.0",
+    "@types/multer": "^1.4.12",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.5",
