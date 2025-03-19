@@ -41,23 +41,26 @@ const initApp = async (): Promise<Express> => {
       reject(new Error("DB_CONNECTION is not defined in .env file"));
     } else {
       await mongoose.connect(process.env.DB_CONNECTION);
-      if (process.env.NODE_ENV == "development") {
-        const options = {
-          definition: {
-            openapi: "3.0.0",
-            info: {
-              title: "Fullstack project",
-              version: "1.0.0",
-              description:
-                "Project of posts and comments, with user authentication",
-            },
-            servers: [{ url: "http://localhost:3000" }],
+      const options = {
+        definition: {
+          openapi: "3.0.0",
+          info: {
+            title: "Fullstack project",
+            version: "1.0.0",
+            description:
+              "Project of posts and comments, with user authentication",
           },
-          apis: ["./src/routes/*.ts"],
-        };
-        const specs = swaggerJsDoc(options);
-        app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-      }
+          servers: [
+            { url: "http://localhost:3000" },
+            { url: "http://10.10.246.101" },
+            { url: "node101.cs.colman.ac.il" },
+            { url: "http://node101.cs.colman.ac.il" }],
+        },
+        apis: ["./src/routes/*.ts"],
+      };
+      const specs = swaggerJsDoc(options);
+      app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+
 
       resolve(app);
     }
