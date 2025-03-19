@@ -256,7 +256,7 @@ class AuthController {
         });
       }
 
-      generateTokensForLogin(user, res);
+      generateTokensForLogin({ ...user.toObject(), name: user.email }, res);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
