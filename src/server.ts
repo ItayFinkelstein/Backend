@@ -6,6 +6,7 @@ import postRouter from "./routes/post_routes";
 import commentRouter from "./routes/comment_routes";
 import authRouter from "./routes/auth_routes";
 import userRouter from "./routes/user_routes";
+import fileRouter from "./routes/file_routes";
 import mongoose from "mongoose";
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
@@ -26,6 +27,8 @@ const initApp = async (): Promise<Express> => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use("/", indexRouter);
+    app.use("/storage", express.static("storage"));
+    app.use("/file", fileRouter);
     app.use("/post", postRouter);
     app.use("/comments", commentRouter);
     app.use("/auth", authRouter);
