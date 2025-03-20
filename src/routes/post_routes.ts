@@ -85,6 +85,10 @@ router.get("/paging", (req, res) => {
   postsController.getWithPaging(req, res);
 });
 
+router.get("/byUser", (req, res) => {
+  postsController.getByUser(req, res);
+});
+
 /**
  * @swagger
  * /post/{id}:

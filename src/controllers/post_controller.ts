@@ -1,3 +1,4 @@
+import { FilterQuery } from "mongoose";
 import postModel from "../models/postModel";
 import BaseController from "./base_controller";
 import { Request, Response } from "express";
@@ -39,6 +40,22 @@ class PostController extends BaseController<typeof postModel> {
         posts = await postModel.find();
         res.status(200).send({ posts });
       }
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  }
+
+  async getByUser(req: Request, res: Response) {
+    const userId = req.query.userId;
+    const filterByUser: FilterQuery<InstanceType<typeof postModel>> = {};
+
+    if (userId) {
+      filterByUser.owner = userId;
+    }
+
+    try {
+      const posts = await postModel.find(filterByUser);
+      res.status(200).send({ posts });
     } catch (error) {
       res.status(500).send(error);
     }
