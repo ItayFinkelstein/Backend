@@ -1,3 +1,4 @@
+import commentModel from "../models/commentModel";
 import postModel from "../models/postModel";
 import BaseController from "./base_controller";
 import { Request, Response } from "express";

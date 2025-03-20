@@ -47,10 +47,17 @@ class BaseController<T> {
     }
   }
 
-  async createItem(req: Request, res: Response) {
+  async createItem<P>(
+    req: Request,
+    res: Response,
+    additionalAction?: () => Promise<void>
+  ) {
     const itemToCreate = req.body;
     try {
       const newItem = await this.model.create(itemToCreate);
+      if (additionalAction) {
+        await additionalAction();
+      }
       res.status(201).send(newItem);
     } catch (error) {
       res.status(500).send(error);

@@ -7,6 +7,8 @@ export interface IPost {
   owner: string;
   image?: string;
   publishDate?: Date;
+  likes: string[];
+  commentAmount: number;
 }
 const postSchema = new mongoose.Schema<IPost>({
   message: {
@@ -27,6 +29,15 @@ const postSchema = new mongoose.Schema<IPost>({
   title: {
     type: String,
     required: true,
+  },
+  likes: {
+    type: [String],
+    default: [],
+  },
+  commentAmount: {
+    type: Number,
+    required: true,
+    default: 0,
   },
 });
 
