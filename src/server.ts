@@ -7,6 +7,7 @@ import commentRouter from "./routes/comment_routes";
 import authRouter from "./routes/auth_routes";
 import userRouter from "./routes/user_routes";
 import fileRouter from "./routes/file_routes";
+import aiRouter from "./routes/ai_routes";
 import mongoose from "mongoose";
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
@@ -33,6 +34,7 @@ const initApp = async (): Promise<Express> => {
     app.use("/comments", commentRouter);
     app.use("/auth", authRouter);
     app.use("/user", userRouter);
+    app.use("/ai", aiRouter);
 
     const db = mongoose.connection;
     db.on("error", (error) =>
