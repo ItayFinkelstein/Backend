@@ -2,7 +2,7 @@ import { Router } from "express";
 import postsController from "../controllers/post_controller";
 import { authMiddleware } from "../controllers/auth_controller";
 
-const router = Router();
+const postRouter = Router();
 
 /**
  * @swagger
@@ -52,7 +52,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/Post'
  */
-router.get("/", postsController.getAll.bind(postsController));
+postRouter.get("/", postsController.getAll.bind(postsController));
 
 /** IMPORTANT: This route must be before the get by id route, otherwise
  * the router mistakes it for that and does it instead.  */
@@ -81,11 +81,11 @@ router.get("/", postsController.getAll.bind(postsController));
  *       500:
  *         description: Some server error
  */
-router.get("/paging", (req, res) => {
+postRouter.get("/paging", (req, res) => {
   postsController.getWithPaging(req, res);
 });
 
-router.get("/byUser", (req, res) => {
+postRouter.get("/byUser", (req, res) => {
   postsController.getByUser(req, res);
 });
 
@@ -112,7 +112,7 @@ router.get("/byUser", (req, res) => {
  *       404:
  *         description: Post not found
  */
-router.get("/:id", (req, res) => {
+postRouter.get("/:id", (req, res) => {
   postsController.getById(req, res);
 });
 
@@ -140,7 +140,7 @@ router.get("/:id", (req, res) => {
  *       500:
  *         description: Some server error
  */
-router.post(
+postRouter.post(
   "/",
   authMiddleware,
   postsController.createItem.bind(postsController)
@@ -179,7 +179,7 @@ router.post(
  *       500:
  *         description: Some server error
  */
-router.put("/:id", authMiddleware, (req, res) => {
+postRouter.put("/:id", authMiddleware, (req, res) => {
   postsController.updateItemById(req, res);
 });
 
@@ -204,8 +204,8 @@ router.put("/:id", authMiddleware, (req, res) => {
  *       404:
  *         description: Post not found
  */
-router.delete("/:id", authMiddleware, (req, res) => {
+postRouter.delete("/:id", authMiddleware, (req, res) => {
   postsController.deleteItemById(req, res);
 });
 
-export default router;
+export default postRouter;
