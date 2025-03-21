@@ -34,7 +34,11 @@ class PostController extends BaseController<typeof postModel> {
       if (page !== undefined && page !== null) {
         const limit = parseInt(process.env.POST_PAGING_SIZE || "10", 10);
         const skip = (page - 1) * limit;
-        posts = await postModel.find(filter).skip(skip).limit(limit);
+        posts = await postModel
+          .find(filter)
+          .sort({ publishDate: -1 })
+          .skip(skip)
+          .limit(limit);
         const totalPostsAmount = await postModel.countDocuments(filter);
 
         res.status(200).send({
