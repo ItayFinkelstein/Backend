@@ -106,7 +106,6 @@ export const authMiddleware = (
 ) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  console.log("middleware", token);
 
   if (!token) {
     res.status(401).send("missing token");

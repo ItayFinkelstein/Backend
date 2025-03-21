@@ -21,24 +21,34 @@ class PostController extends BaseController<typeof postModel> {
 
   async getWithPaging(req: Request, res: Response) {
     const page = req.query.page ? parseInt(req.query.page as string) : null; // Check if page is provided
+    const userId = req.query.userId as string;
 
     try {
       let posts;
 
-      if (page) {
+      let filter: FilterQuery<InstanceType<typeof postModel>> = {};
+      console.log(userId);
+      if (userId !== undefined) {
+        console.log("USER FILTER");
+        filter.owner = userId;
+      }
+
+      if (page !== undefined && page !== null) {
         const limit = parseInt(process.env.LIMIT_POST_FETCHING || "10", 10);
         const skip = (page - 1) * limit;
-        posts = await postModel.find().skip(skip).limit(limit);
-
-        const totalPostsAmount = await postModel.countDocuments();
+        console.log("skip", skip);
+        posts = await postModel.find(filter).skip(skip).limit(limit);
+        console.log(posts);
+        const totalPostsAmount = await postModel.countDocuments(filter);
 
         res.status(200).send({
           posts: posts,
           hasNextPage: skip + posts.length < totalPostsAmount,
         });
       } else {
-        posts = await postModel.find();
-        res.status(200).send({ posts });
+        posts = await postModel.find(filter);
+        console.log(posts);
+        res.status(200).send({ posts, hasNextPage: false });
       }
     } catch (error) {
       res.status(500).send(error);
