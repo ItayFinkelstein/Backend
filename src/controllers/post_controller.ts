@@ -27,14 +27,12 @@ class PostController extends BaseController<typeof postModel> {
       let posts;
 
       let filter: FilterQuery<InstanceType<typeof postModel>> = {};
-      console.log(userId);
       if (userId !== undefined) {
-        console.log("USER FILTER");
         filter.owner = userId;
       }
 
       if (page !== undefined && page !== null) {
-        const limit = parseInt(process.env.LIMIT_POST_FETCHING || "10", 10);
+        const limit = parseInt(process.env.POST_PAGING_SIZE || "10", 10);
         const skip = (page - 1) * limit;
         posts = await postModel.find(filter).skip(skip).limit(limit);
         const totalPostsAmount = await postModel.countDocuments(filter);
@@ -45,7 +43,6 @@ class PostController extends BaseController<typeof postModel> {
         });
       } else {
         posts = await postModel.find(filter);
-        console.log(posts);
         res.status(200).send({ posts, hasNextPage: false });
       }
     } catch (error) {
