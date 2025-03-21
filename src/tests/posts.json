@@ -2,16 +2,22 @@
   {
     "message": "this is The first post, cool ha",
     "owner": "Gil",
-    "title": "First Post"
+    "title": "First Post",
+    "likes": [],
+    "commentAmount": 0
   },
   {
     "message": "The 2nd post, number two",
     "owner": "Jill",
-    "title": "Second Post"
+    "title": "Second Post",
+    "likes": [],
+    "commentAmount": 0
   },
   {
     "message": "Post with a message",
     "owner": "Tom Avni",
-    "title": "Important Post"
+    "title": "Important Post",
+    "likes": [],
+    "commentAmount": 0
   }
 ]
