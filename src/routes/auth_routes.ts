@@ -18,11 +18,6 @@ const authRouter = express.Router();
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
- */
-
-/**
- * @swagger
- * components:
  *   schemas:
  *     User:
  *       type: object
@@ -32,23 +27,43 @@ const authRouter = express.Router();
  *       properties:
  *         _id:
  *           type: string
- *           description: The auto-generated id of the user
+ *           description: The auto-generated ID of the user
+ *         name:
+ *           type: string
+ *           description: The user's name
  *         email:
  *           type: string
- *           description: The user email
+ *           description: The user's email
  *         password:
  *           type: string
- *           description: The user password
+ *           description: The user's password
+ *         iconImage:
+ *           type: string
+ *           description: The user's avatar URL
  *         refreshTokens:
  *           type: array
  *           items:
  *             type: string
  *           description: The refresh tokens of the user
  *       example:
- *         _id: '60d21b4667d0d8992e610c85'
- *         email: 'bob@gmail.com'
- *         password: '123456'
+ *         _id: "60d21b4667d0d8992e610c85"
+ *         name: "John Doe"
+ *         email: "bob@gmail.com"
+ *         password: "123456"
+ *         iconImage: "https://example.com/avatar.jpg"
  *         refreshTokens: []
+ *     Tokens:
+ *       type: object
+ *       properties:
+ *         accessToken:
+ *           type: string
+ *           description: The JWT access token
+ *         refreshToken:
+ *           type: string
+ *           description: The refresh token
+ *       example:
+ *         accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *         refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  */
 
 /**
@@ -70,8 +85,10 @@ const authRouter = express.Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Missing or invalid input
  *       500:
- *         description: Some server error
+ *         description: Internal server error
  */
 authRouter.post("/register", (req: Request, res: Response) => {
   authController.register(req, res);
@@ -95,24 +112,19 @@ authRouter.post("/register", (req: Request, res: Response) => {
  *               password:
  *                 type: string
  *             example:
- *               email: 'bob@gmail.com'
- *               password: '123456'
+ *               email: "bob@gmail.com"
+ *               password: "123456"
  *     responses:
  *       200:
  *         description: The user was successfully logged in
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                 refreshToken:
- *                   type: string
+ *               $ref: '#/components/schemas/Tokens'
  *       401:
  *         description: Invalid credentials
  *       500:
- *         description: Some server error
+ *         description: Internal server error
  */
 authRouter.post("/login", (req: Request, res: Response) => {
   authController.login(req, res);
@@ -134,12 +146,14 @@ authRouter.post("/login", (req: Request, res: Response) => {
  *               refreshToken:
  *                 type: string
  *             example:
- *               refreshToken: 'some-refresh-token'
+ *               refreshToken: "some-refresh-token"
  *     responses:
  *       200:
  *         description: The user was successfully logged out
+ *       400:
+ *         description: Missing or invalid refresh token
  *       500:
- *         description: Some server error
+ *         description: Internal server error
  */
 authRouter.post("/logout", (req: Request, res: Response) => {
   authController.logout(req, res);
@@ -161,23 +175,18 @@ authRouter.post("/logout", (req: Request, res: Response) => {
  *               refreshToken:
  *                 type: string
  *             example:
- *               refreshToken: 'some-refresh-token'
+ *               refreshToken: "some-refresh-token"
  *     responses:
  *       200:
  *         description: The token was successfully refreshed
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                 refreshToken:
- *                   type: string
+ *               $ref: '#/components/schemas/Tokens'
  *       401:
  *         description: Invalid refresh token
  *       500:
- *         description: Some server error
+ *         description: Internal server error
  */
 authRouter.post("/refresh", (req: Request, res: Response) => {
   authController.refresh(req, res);
@@ -207,20 +216,13 @@ authRouter.post("/refresh", (req: Request, res: Response) => {
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                   description: The JWT token for the authenticated user
- *                 refreshToken:
- *                   type: string
- *                   description: The refresh token for the authenticated user
+ *               $ref: '#/components/schemas/Tokens'
  *       400:
  *         description: Invalid or missing credential
  *       500:
- *         description: Some server error
+ *         description: Internal server error
  */
-authRouter.post("/google", (req, res) => {
+authRouter.post("/google", (req: Request, res: Response) => {
   authController.googleSignIn(req, res);
 });
 
