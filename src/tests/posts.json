@@ -1,22 +1,31 @@
 [
   {
+    "_id" :"67d5a66735c7c84857cffcc4",
     "message": "this is The first post, cool ha",
     "owner": "Gil",
     "title": "First Post",
+    "image": "http://example.com/image1.jpg",
+    "publishDate": "2025-03-10T00:00:00.000Z",
     "likes": [],
     "commentAmount": 0
   },
   {
+    "_id" :"67db0c3089b72f5cefaa9427",
     "message": "The 2nd post, number two",
     "owner": "Jill",
     "title": "Second Post",
+    "image": "http://example.com/image2.jpg",
+    "publishDate": "2025-03-10T00:00:00.000Z",
     "likes": [],
     "commentAmount": 0
   },
   {
+    "_id" :"67db0c3089b72f5cefaa9428",
     "message": "Post with a message",
     "owner": "Tom Avni",
     "title": "Important Post",
+    "image": "http://example.com/image3.jpg",
+    "publishDate": "2025-03-17T00:00:00.000Z",
     "likes": [],
     "commentAmount": 0
   }
