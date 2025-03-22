@@ -6,6 +6,7 @@ export interface IComment {
   message: string;
   owner: string;
   postId: string;
+  publishDate?: Date;
 }
 
 const commentsSchema = new Schema<IComment>({
@@ -19,6 +20,10 @@ const commentsSchema = new Schema<IComment>({
   },
   postId: {
     type: String,
+    required: true,
+  },
+  publishDate: {
+    type: Date,
     required: true,
   },
 });
