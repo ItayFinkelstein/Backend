@@ -18,18 +18,25 @@ type UserInfo = {
     _id?: string;
     email: string;
     password: string;
+    type: string;
+    name: string;
     accessToken?: string;
     refreshToken?: string;
 };
 
 const userInfo: UserInfo = {
-    email: "itay.f@gmail.com",
-    password: "top_secret"
+    _id: "67dc9567425061dee2d2d26e",
+    name: "Itay",
+    email: "itayf@gmail.com",
+    password: "898989",
+    type: "normal",
 }
 
 describe("Auth Tests", () => {
     test("Auth Registration", async () => {
         const response = await request(app).post("/auth/register").send(userInfo);
+        console.log("responseAuth:");
+        console.log(response.body);
         expect(response.statusCode).toBe(200);
     });
 
@@ -92,7 +99,8 @@ describe("Auth Tests", () => {
         const response = await request(app).post("/comments").send({
             owner: userInfo._id,
             message: "comment 1",
-            postId: "123"
+            postId: "67db0c3089b72f5cefaa9427",
+            publishDate: "2025-03-18T00:00:00.000Z"
         });
         expect(response.statusCode).not.toBe(201);
 
@@ -101,8 +109,11 @@ describe("Auth Tests", () => {
         }).send({
             owner: userInfo._id,
             message: "comment 2",
-            postId: "123"
+            postId: "67db0c3089b72f5cefaa9427",
+            publishDate: "2025-03-18T00:00:00.000Z"
         });
+        console.log("secondResponse:");
+        console.log(secondResponse.body);
 
         expect(secondResponse.statusCode).toBe(201);
     });
@@ -220,8 +231,13 @@ describe("Auth Tests", () => {
         const response2 = await request(app).post("/post").set({
             authorization: 'jwt ' + userInfo.accessToken
         }).send({
-            owner: "jonny",
-            message: "uploaded post",
+            message: "send",
+            owner: "Jill",
+            title: "Second Post",
+            image: "http://example.com/image2.jpg",
+            publishDate: "2025-03-10T00:00:00.000Z",
+            likes: [],
+            commentAmount: 0
         });
 
         expect(response2.statusCode).not.toBe(201);
@@ -236,8 +252,13 @@ describe("Auth Tests", () => {
         const response4 = await request(app).post("/post").set({
             authorization: 'jwt ' + userInfo.accessToken
         }).send({
-            owner: "jonny",
             message: "another one",
+            owner: "Jill",
+            title: "Second Post",
+            image: "http://example.com/image2.jpg",
+            publishDate: "2025-03-10T00:00:00.000Z",
+            likes: [],
+            commentAmount: 0
         });
 
         expect(response4.statusCode).toBe(201);

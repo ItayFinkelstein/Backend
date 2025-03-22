@@ -1,17 +1,20 @@
 [
     {
         "message": "this is test comment #1 hello world",
-        "postId": "45fafafvaz55bgae65",
-        "owner": "Itay"
+        "postId": "67da0082f8e691703191b3f6",
+        "owner": "67dc9567425061dee2d2d26e",
+        "publishDate": "2025-03-18T00:00:00.000Z"
     },
     {
         "message": "another comment on the same post",
-        "postId": "45fafafvaz55bgae65",
-        "owner": "user"
+        "postId": "67da0082f8e691703191b3f6",
+        "owner": "67dc9567425061dee2d2d26e",
+        "publishDate": "2025-03-18T00:00:00.000Z"
     },
     {
         "message": "whats up",
-        "postId": "wf315djhdfit8f",
-        "owner": "blah blah"
+        "postId": "67da179cf8e691703191b426",
+        "owner": "67dc9567425061dee2d2d26e",
+        "publishDate": "2025-03-10T00:00:00.000Z"
     }
 ]

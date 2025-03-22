@@ -6,11 +6,13 @@
   "scripts": {
     "devstart": "nodemon --exec ts-node ./src/app.ts",
     "start": "tsc && node ./dist/app.js",
+	  "prod": "cp .env_prod .env && tsc -p tsconfig_prod.json && pm2 restart ecosystem.config.js --env production",
     "test": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage --runInBand",
     "testComments": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage comments.test.ts",
     "testPosts": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage post.test.ts",
     "testAuth": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage auth.test.ts",
-    "testFiles": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage files.test.ts"
+    "testFiles": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage files.test.ts",
+    "testUsers": "cp .env_test .env && jest --detectOpenHandles --forceExit --coverage user.test.ts"
   },
   "author": "",
   "license": "ISC",
