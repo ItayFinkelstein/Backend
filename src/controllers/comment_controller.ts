@@ -19,7 +19,9 @@ class CommentController extends BaseController<typeof commentModel> {
     const idToFind = req.params.id;
     if (Mongoose.prototype.isValidObjectId(idToFind)) {
       try {
-        const items = await commentModel.find({ postId: idToFind });
+        const items = await commentModel
+          .find({ postId: idToFind })
+          .sort({ publishDate: -1 });
         res.status(200).send(items);
       } catch (error) {
         res.status(500).send(error);
