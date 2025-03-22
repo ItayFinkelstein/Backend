@@ -36,7 +36,7 @@ class PostController extends BaseController<typeof postModel> {
         const skip = (page - 1) * limit;
         posts = await postModel
           .find(filter)
-          .sort({ publishDate: -1 })
+          .sort({ publishDate: -1, id: -1 })
           .skip(skip)
           .limit(limit);
         const totalPostsAmount = await postModel.countDocuments(filter);
