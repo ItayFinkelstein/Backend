@@ -17,7 +17,6 @@ class CommentController extends BaseController<typeof commentModel> {
 
   async getByPostId(req: Request, res: Response) {
     const idToFind = req.params.id;
-
     if (Mongoose.prototype.isValidObjectId(idToFind)) {
       try {
         const items = await commentModel.find({ postId: idToFind });
