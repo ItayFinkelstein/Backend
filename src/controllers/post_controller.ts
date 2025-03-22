@@ -36,11 +36,13 @@ class PostController extends BaseController<typeof postModel> {
         const skip = (page - 1) * limit;
         posts = await postModel
           .find(filter)
-          .sort({ publishDate: -1 })
+          .sort({
+            publishDate: -1,
+            _id: -1,
+          }) /** id is just in case 2 records have the exact same date */
           .skip(skip)
           .limit(limit);
         const totalPostsAmount = await postModel.countDocuments(filter);
-
         res.status(200).send({
           posts: posts,
           hasNextPage: skip + posts.length < totalPostsAmount,
