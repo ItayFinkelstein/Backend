@@ -53,6 +53,42 @@ const postRouter = Router();
  *                 $ref: '#/components/schemas/Post'
  */
 postRouter.get("/", postsController.getAll.bind(postsController));
+
+/** IMPORTANT: This route must be before the get by id route, otherwise
+ * the router mistakes it for that and does it instead.  */
+/**
+ * @swagger
+ * /post/paging:
+ *   get:
+ *     summary: Get posts with paging
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         required: false
+ *         description: The page number
+ *     responses:
+ *       200:
+ *         description: The list of posts with paging
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Post'
+ *       500:
+ *         description: Some server error
+ */
+postRouter.get("/paging", (req, res) => {
+  postsController.getWithPaging(req, res);
+});
+
+postRouter.get("/byUser", (req, res) => {
+  postsController.getByUser(req, res);
+});
+
 /**
  * @swagger
  * /post/{id}:
