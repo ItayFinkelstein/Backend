@@ -16,7 +16,7 @@ type User = {
     token?: string;
 };
 
-const testUser = {
+const testUser: User = {
     _id: "67dc9567425061dee2d2d26e",
     email: "testuser@gmail.com",
     password: "password123",
